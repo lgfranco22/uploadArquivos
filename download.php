@@ -1,4 +1,5 @@
-<?
+<?php
+
 header("Cache-Control: no-store, no-cache, must-revalidate");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
@@ -27,12 +28,8 @@ if(isset($file) && file_exists($file)){
          header("Content-Disposition: attachment; filename=".urldecode(str_replace("+", "%20", urlencode(utf8_decode($filename)))).".".$extensao); 
          readfile($file);
          exit;
-
 }
-
 }
-
-
 
 include("./conexao.php");
 
@@ -42,14 +39,11 @@ $pasta="./uploads/";
 
 $id=$_GET["id"];
 
-$consulta = $conn->query("SELECT nome,arquivo FROM arquivos WHERE id='".$id."'");
-$consulta->execute();$dados = $consulta->fetchAll();foreach($dados as $linha){  
-//Realiza o download for?ado no navegador, pegando o caminho do arquivo e o nome e gerando o arquivo de download com o nome
-download($pasta.$linha["arquivo"],$linha["nome"]);  
+$consulta = $conn->query("SELECT nome, arquivo FROM arquivos WHERE id=$id");
+$consulta->execute();
+$dados = $consulta->fetchAll();
 
+foreach($dados as $linha){  
+         //Realiza o download for?ado no navegador, pegando o caminho do arquivo e o nome e gerando o arquivo de download com o nome
+         download($pasta.$linha["arquivo"],$linha["nome"]);  
 }
-
-
-
-
-
